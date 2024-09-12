@@ -1,6 +1,6 @@
 const glassBox = document.getElementById('glassBox');
 
-const blurRange = document.getElementById('blurRange');
+const blurRange = document.querySelectorAll('blurRange');
 const blurValue = document.getElementById('blurValue');
 
 const opacityInput = document.getElementById('opacityInput');
@@ -87,3 +87,36 @@ colorPicker.addEventListener('input', updateCanvas);
 
 // Initial noise generation
 updateCanvas();
+
+
+// circle
+let circle = document.getElementById('circle');
+let glassBack = document.getElementById('glass-bg');
+let drag = false;
+
+circle.addEventListener('mousedown', function() {
+    drag = true;
+});
+
+// Attach mouseup event to the document to stop dragging
+document.addEventListener('mouseup', function() {
+    drag = false;
+});
+
+document.addEventListener('mousemove', function(dets) {
+    if (drag) {
+        const newX = dets.clientX - glassBack.getBoundingClientRect().x;
+        const newY = dets.clientY - glassBack.getBoundingClientRect().y;
+
+        // Check boundaries to ensure the circle stays within the glassBack element
+        const maxX = glassBack.clientWidth - circle.clientWidth;
+        const maxY = glassBack.clientHeight - circle.clientHeight;
+
+        if (newX >= 0 && newX <= maxX) {
+            circle.style.left = `${newX}px`;
+        }
+        if (newY >= 0 && newY <= maxY) {
+            circle.style.top = `${newY}px`;
+        }
+    }
+});
